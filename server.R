@@ -16,7 +16,7 @@ shinyServer(function(input, output) {
 
   output$time_5k <- renderText(
     if (is.na(time_5k())) {
-      "Enter your current 5K time above."} else {
+      ""} else {
 
     glue::glue("Current 5K time {ifelse(time_5k() > 3600, strftime(time_5k(), format = '%H:%M:%S'), strftime(time_5k(), format = '%M:%S'))}")
       }

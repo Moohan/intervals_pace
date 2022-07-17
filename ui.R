@@ -9,35 +9,53 @@ shinyUI(fluidPage(
     column(
       width = 4,
       wellPanel(
+        div(HTML("<strong>Instructions</strong>
+<ul>
+<li>Enter you current 5K time using the drop downs.</li>
+<li>Choose an interval distance with the dropdown.</li>
+<li>(Optional) - choose how much faster you'd like to run the interval, this will be auto-filled with a distance-based recommendation.</li>
+<li>Click the button!</li>
+</ul>")),
+        fluidRow(column(
+          width = 12,
+          actionButton(
+            inputId = "go",
+            label = "Work out target pace",
+            icon = icon("running")
+          )
+        )),
+      )
+    ),
+    column(
+      width = 4,
+      wellPanel(
+        strong("Current 5K time"),
         fixedRow(
           column(
             width = 4,
-            numericInput(
+            selectInput(
               inputId = "input_hours",
               label = "hh",
-              value = 0,
-              min = 0,
-              max = 2
+              choices = 0:2,
+              selected = "0"
             )
           ),
           column(
             width = 4,
-            numericInput(
+            selectInput(
               inputId = "input_mins",
               label = "mm",
-              value = 0,
-              min = 0,
-              max = 60
+              choices = 0:60,
+              selected = "0"
             )
           ),
           column(
             width = 4,
-            numericInput(
+            selectInput(
               inputId = "input_secs",
               label = "ss",
-              value = 0,
-              min = 0,
-              max = 60
+              choices = 0:60,
+              selected = "0"
             )
           )
         ),
@@ -46,9 +64,7 @@ shinyUI(fluidPage(
           textOutput(outputId = "time_5k")
         ))
       )
-    )
-  ),
-  fluidRow(
+    ),
     column(
       width = 4,
       wellPanel(
@@ -70,14 +86,6 @@ shinyUI(fluidPage(
       )
     )
   ),
-  fluidRow(column(
-    width = 4,
-    actionButton(
-      inputId = "go",
-      label = "Work out target pace",
-      icon = icon("running")
-    )
-  )),
   fluidRow(br()),
   fluidRow(column(
     width = 12,
