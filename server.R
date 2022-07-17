@@ -2,15 +2,26 @@ library(shiny)
 
 shinyServer(function(input, output) {
   time_5k <- reactive({
+    if (all(input$input_secs == "0", input$input_mins == "0", input$input_hours == "0")) {
+      NA
+    } else {
     hms::hms(
-      seconds = input$input_secs,
-      minutes = input$input_mins,
-      hours = input$input_hours
+      seconds = as.integer(input$input_secs),
+      minutes = as.integer(input$input_mins),
+      hours = as.integer(input$input_hours)
     )
+    }
   }) |>
     bindCache(input$input_hours, input$input_mins, input$input_secs)
 
-  output$time_5k <- renderText(glue::glue("Current 5K time {ifelse(time_5k() > 3600, strftime(time_5k(), format = '%H:%M:%S'), strftime(time_5k(), format = '%M:%S'))}"))
+  output$time_5k <- renderText(
+    if (is.na(time_5k())) {
+      "Enter your current 5K time above."} else {
+
+    glue::glue("Current 5K time {ifelse(time_5k() > 3600, strftime(time_5k(), format = '%H:%M:%S'), strftime(time_5k(), format = '%M:%S'))}")
+      }
+        )
+
 
   pace_5k <- reactive(hms::as_hms(round(time_5k() / 5)))
 
